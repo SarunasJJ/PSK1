@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.demo.Mappers.SalesPersonMapper">
+  <resultMap id="salespersonMap" type="org.example.demo.Entity.SalesPerson">
+    <id property="id" column="id"/>
+    <result property="name" column="name"/>
+    <result property="email" column="email"/>
+    <result property="phone" column="phone"/>
+  </resultMap>
+
+  <select id="findById" parameterType="long" resultMap="salespersonMap">
+    SELECT * FROM salesperson WHERE id = #{id}
+  </select>
+
+  <select id="findAll" resultMap="salespersonMap">
+    SELECT * FROM salesperson
+  </select>
+
+  <insert id="insert" parameterType="org.example.demo.Entity.SalesPerson" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO salesperson (name, email, phone)
+    VALUES (#{name}, #{email}, #{phone})
+  </insert>
+
+  <update id="update" parameterType="org.example.demo.Entity.SalesPerson">
+    UPDATE salesperson
+    SET name = #{name},
+        email = #{email},
+        phone = #{phone}
+    WHERE id = #{id}
+  </update>
+
+  <delete id="delete" parameterType="long">
+    DELETE FROM salesperson WHERE id = #{id}
+  </delete>
+
+</mapper>

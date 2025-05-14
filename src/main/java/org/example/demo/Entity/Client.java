@@ -2,38 +2,29 @@ package org.example.demo.Entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@Table(name = "clients")
 public class Client {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @Column(unique = true)
-    private String socialSecurityNumber;
+    private String name;
 
-    private String firstName;
-    private String lastName;
+    @Column(name = "email_address")
     private String email;
     private String phone;
-    private String address;
 
-    @ManyToOne
-    @JoinColumn(name = "sales_person_id")
-    private SalesPerson salesPerson;
-
-    @ManyToMany
-    @JoinTable(
-            name = "client_vehicle",
-            joinColumns = @JoinColumn(name = "client_id"),
-            inverseJoinColumns = @JoinColumn(name = "vehicle_id")
-    )
-    private List<Vehicle> vehicles;
-
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<Vehicle> vehicles = new ArrayList<>();
 }

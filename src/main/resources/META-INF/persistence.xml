@@ -1,9 +1,23 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_2.xsd"
-             version="3.2">
-  <persistence-unit name="default">
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
+             version="2.2">
+  <persistence-unit name="dealershipPU" transaction-type="JTA">
+    <jta-data-source>jdbc/DealershipDB</jta-data-source>
+    <class>org.example.demo.Entity.Client</class>
+    <class>org.example.demo.Entity.Vehicle</class>
+    <properties>
+      <!-- Update the schema generation strategy -->
+      <property name="javax.persistence.schema-generation.database.action" value="create"/>
 
+      <!-- PostgreSQL dialect for Hibernate -->
+      <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+
+      <!-- Optional: Show SQL for debugging -->
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.format_sql" value="true"/>
+    </properties>
   </persistence-unit>
 </persistence>

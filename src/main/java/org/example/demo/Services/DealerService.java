@@ -1,0 +1,81 @@
+package org.example.demo.Services;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import org.example.demo.DAO.ClientDAO;
+import org.example.demo.DAO.SalesPersonDAO;
+import org.example.demo.DAO.VehicleDAO;
+import org.example.demo.Entity.Client;
+import org.example.demo.Entity.SalesPerson;
+import org.example.demo.Entity.Vehicle;
+
+import java.util.List;
+
+@ApplicationScoped
+public class DealerService {
+    @Inject
+    private VehicleDAO vehicleDAO;
+
+    @Inject
+    private ClientDAO clientDAO;
+
+    @Inject
+    private SalesPersonDAO salesPersonDAO;
+
+    @Transactional
+    public void purchaseVehicle(Long vehicleId, Long clientId) {
+        Vehicle vehicle = vehicleDAO.findById(vehicleId);
+        Client client = clientDAO.findById(clientId);
+
+        if (vehicle != null && client != null) {
+            vehicle.setOwner(client);
+            client.getVehicles().add(vehicle);
+            vehicleDAO.save(vehicle);
+            clientDAO.save(client);
+        }
+    }
+
+    public List<Client> getAllClients() {
+        return clientDAO.findAll();
+    }
+
+    public List<Vehicle> getAllVehicles() {
+        return vehicleDAO.findAll();
+    }
+
+    public List<SalesPerson> getAllSalesPersons() {
+        return salesPersonDAO.findAll();
+    }
+
+    public List<Vehicle> getVehiclesByClientId(Long clientId) {
+        return vehicleDAO.findByOwnerId(clientId);
+    }
+
+    public Client getClientById(Long clientId) {
+        return clientDAO.findById(clientId);
+    }
+
+    public Vehicle getVehicleById(Long vehicleId) {
+        return vehicleDAO.findById(vehicleId);
+    }
+
+    public SalesPerson getSalesPersonById(Long salesPersonId) {
+        return salesPersonDAO.findById(salesPersonId);
+    }
+
+    @Transactional
+    public void addClient(Client client) {
+        clientDAO.save(client);
+    }
+
+    @Transactional
+    public void addVehicle(Vehicle vehicle) {
+        vehicleDAO.save(vehicle);
+    }
+
+    @Transactional
+    public void addSalesPerson(SalesPerson salesPerson) {
+        salesPersonDAO.save(salesPerson);
+    }
+}
