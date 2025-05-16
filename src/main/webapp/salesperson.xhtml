@@ -11,7 +11,7 @@
   <h1>Salespeople List</h1>
 
   <h:form>
-    <h:dataTable value="#{salesPersonBean.salesPerson}" var="salesperson" styleClass="data-table">
+    <h:dataTable value="#{salesPersonBean.salespeople}" var="salesperson" styleClass="data-table">
       <h:column>
         <f:facet name="header">ID</f:facet>
         #{salesperson.id}
@@ -32,7 +32,7 @@
 
     <h2>Add New Salesperson</h2>
     <div class="form-group">
-      <h:outputLabel for="name">First Name:</h:outputLabel>
+      <h:outputLabel for="name">Name:</h:outputLabel>
       <h:inputText id="name" value="#{salesPersonBean.salesPerson.name}" required="true"/>
     </div>
     <div class="form-group">
@@ -45,5 +45,9 @@
     </div>
     <h:commandButton value="Save Salesperson" action="#{salesPersonBean.saveSalesperson}" styleClass="btn"/>
   </h:form>
+
+  <div style="margin-top: 20px;">
+    <h:link outcome="index" value="Back to Home" styleClass="btn"/>
+  </div>
 </h:body>
 </html>

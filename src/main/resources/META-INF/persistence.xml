@@ -8,7 +8,7 @@
     <jta-data-source>jdbc/PSK1</jta-data-source>
     <class>org.example.demo.Entity.Client</class>
     <class>org.example.demo.Entity.Vehicle</class>
-    <class>org.example.demo.Entity.SalesPerson</class>
+
     <properties>
       <!-- Update the schema generation strategy -->
       <property name="javax.persistence.schema-generation.database.action" value="create"/>

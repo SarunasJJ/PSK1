@@ -16,6 +16,7 @@ import java.util.List;
 
 @RequestScoped
 public class SalesPersonDAO {
+    private SqlSessionFactory sqlSessionFactory;
     private SqlSession sqlSession;
 
     @PostConstruct
@@ -23,8 +24,8 @@ public class SalesPersonDAO {
         try {
             String resource = "mybatis-config.xml";
             InputStream inputStream = Resources.getResourceAsStream(resource);
-            SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-            sqlSession = sqlSessionFactory.openSession();
+            sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+            sqlSession = sqlSessionFactory.openSession(true); // Auto-commit
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize SqlSession", e);
         }
