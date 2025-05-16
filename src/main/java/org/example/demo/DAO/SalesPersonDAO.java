@@ -2,7 +2,8 @@ package org.example.demo.DAO;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -11,13 +12,14 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.example.demo.Entity.SalesPerson;
 import org.example.demo.Mappers.SalesPersonMapper;
 
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.List;
 
-@RequestScoped
+@ApplicationScoped  // Changed to ApplicationScoped to ensure session lives longer
 public class SalesPersonDAO {
     private SqlSessionFactory sqlSessionFactory;
-    private SqlSession sqlSession;
 
     @PostConstruct
     public void init() {
@@ -25,43 +27,42 @@ public class SalesPersonDAO {
             String resource = "mybatis-config.xml";
             InputStream inputStream = Resources.getResourceAsStream(resource);
             sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-            sqlSession = sqlSessionFactory.openSession(true); // Auto-commit
         } catch (Exception e) {
-            throw new RuntimeException("Failed to initialize SqlSession", e);
-        }
-    }
-
-    @PreDestroy
-    public void destroy() {
-        if (sqlSession != null) {
-            sqlSession.close();
+            throw new RuntimeException("Failed to initialize SqlSessionFactory", e);
         }
     }
 
     public SalesPerson findById(Long id) {
-        SalesPersonMapper mapper = sqlSession.getMapper(SalesPersonMapper.class);
-        return mapper.findById(id);
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {  // Auto-commit
+            SalesPersonMapper mapper = sqlSession.getMapper(SalesPersonMapper.class);
+            return mapper.findById(id);
+        }
     }
 
     public List<SalesPerson> findAll() {
-        SalesPersonMapper mapper = sqlSession.getMapper(SalesPersonMapper.class);
-        return mapper.findAll();
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {  // Auto-commit
+            SalesPersonMapper mapper = sqlSession.getMapper(SalesPersonMapper.class);
+            return mapper.findAll();
+        }
     }
 
     @Transactional
     public void save(SalesPerson salesPerson) {
-        SalesPersonMapper mapper = sqlSession.getMapper(SalesPersonMapper.class);
-        if (salesPerson.getId() == null) {
-            mapper.insert(salesPerson);
-        } else {
-            mapper.update(salesPerson);
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
+            SalesPersonMapper mapper = sqlSession.getMapper(SalesPersonMapper.class);
+            if (salesPerson.getId() == null) {
+                mapper.insert(salesPerson);
+            } else {
+                mapper.update(salesPerson);
+            }
         }
     }
 
     @Transactional
     public void delete(Long id) {
-        SalesPersonMapper mapper = sqlSession.getMapper(SalesPersonMapper.class);
-        mapper.delete(id);
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {  // Auto-commit
+            SalesPersonMapper mapper = sqlSession.getMapper(SalesPersonMapper.class);
+            mapper.delete(id);
+        }
     }
-
 }

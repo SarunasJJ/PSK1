@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+  <title>Client Vehicles</title>
+  <h:outputStylesheet library="css" name="style.css"/>
+</h:head>
+<h:body>
+  <h1>Vehicles for #{clientBean.selectedClient.name}</h1>
+
+  <h:form>
+    <h:dataTable value="#{clientBean.clientVehicles}" var="vehicle" styleClass="data-table">
+      <h:column>
+        <f:facet name="header">ID</f:facet>
+        #{vehicle.id}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Manufacturer</f:facet>
+        #{vehicle.manufacturer}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Model</f:facet>
+        #{vehicle.model}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Year</f:facet>
+        #{vehicle.year}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Price</f:facet>
+        #{vehicle.price}
+      </h:column>
+    </h:dataTable>
+
+    <div style="margin-top: 20px;">
+      <h:link outcome="clients" value="Back to Clients" styleClass="btn"/>
+    </div>
+  </h:form>
+</h:body>
+</html>

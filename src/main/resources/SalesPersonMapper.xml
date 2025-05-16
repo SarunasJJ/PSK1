@@ -34,5 +34,4 @@
   <delete id="delete" parameterType="long">
     DELETE FROM salesperson WHERE id = #{id}
   </delete>
-
 </mapper>

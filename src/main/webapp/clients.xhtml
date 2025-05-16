@@ -11,7 +11,7 @@
   <h1>Client List</h1>
 
   <h:form>
-    <h:dataTable value="#{clientBean.client}" var="client" styleClass="data-table">
+    <h:dataTable value="#{clientBean.allClients}" var="client" styleClass="data-table">
       <h:column>
         <f:facet name="header">ID</f:facet>
         #{client.id}
@@ -49,5 +49,9 @@
     </div>
     <h:commandButton value="Save Client" action="#{clientBean.saveClient}" styleClass="btn"/>
   </h:form>
+
+  <div style="margin-top: 20px;">
+    <h:link outcome="index" value="Back to Home" styleClass="btn"/>
+  </div>
 </h:body>
 </html>

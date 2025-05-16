@@ -11,7 +11,7 @@
   <h1>Vehicle List</h1>
 
   <h:form>
-    <h:dataTable value="#{vehicleBean.vehicle}" var="vehicle" styleClass="data-table">
+    <h:dataTable value="#{vehicleBean.allVehicles}" var="vehicle" styleClass="data-table">
       <h:column>
         <f:facet name="header">ID</f:facet>
         #{vehicle.id}
@@ -61,5 +61,9 @@
     </div>
     <h:commandButton value="Save Vehicle" action="#{vehicleBean.saveVehicle}" styleClass="btn"/>
   </h:form>
+
+  <div style="margin-top: 20px;">
+    <h:link outcome="index" value="Back to Home" styleClass="btn"/>
+  </div>
 </h:body>
 </html>
