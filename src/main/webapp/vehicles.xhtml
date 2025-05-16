@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+  <title>Vehicles</title>
+  <h:outputStylesheet library="css" name="style.css"/>
+</h:head>
+<h:body>
+  <h1>Vehicle List</h1>
+
+  <h:form>
+    <h:dataTable value="#{vehicleBean.vehicle}" var="vehicle" styleClass="data-table">
+      <h:column>
+        <f:facet name="header">ID</f:facet>
+        #{vehicle.id}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Manufacturer</f:facet>
+        #{vehicle.manufacturer}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Model</f:facet>
+        #{vehicle.model}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Year</f:facet>
+        #{vehicle.year}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Price</f:facet>
+        #{vehicle.price}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Owner</f:facet>
+        #{vehicle.owner != null ? vehicle.owner.name : 'No Owner'}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Actions</f:facet>
+        <h:commandButton value="Assign Owner" action="#{vehicleBean.assignOwner(vehicle.id)}" styleClass="btn"/>
+      </h:column>
+    </h:dataTable>
+
+    <h2>Add New Vehicle</h2>
+    <div class="form-group">
+      <h:outputLabel for="make">Make:</h:outputLabel>
+      <h:inputText id="make" value="#{vehicleBean.vehicle.manufacturer}" required="true"/>
+    </div>
+    <div class="form-group">
+      <h:outputLabel for="model">Model:</h:outputLabel>
+      <h:inputText id="model" value="#{vehicleBean.vehicle.model}" required="true"/>
+    </div>
+    <div class="form-group">
+      <h:outputLabel for="year">Year:</h:outputLabel>
+      <h:inputText id="year" value="#{vehicleBean.vehicle.year}" required="true"/>
+    </div>
+    <div class="form-group">
+      <h:outputLabel for="price">Price:</h:outputLabel>
+      <h:inputText id="price" value="#{vehicleBean.vehicle.price}" required="true"/>
+    </div>
+    <h:commandButton value="Save Vehicle" action="#{vehicleBean.saveVehicle}" styleClass="btn"/>
+  </h:form>
+</h:body>
+</html>
