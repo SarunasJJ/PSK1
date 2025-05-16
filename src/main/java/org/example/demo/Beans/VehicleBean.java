@@ -33,7 +33,7 @@ public class VehicleBean {
 
     public String saveVehicle() {
         dealerService.addVehicle(vehicle);
-        vehicle = new Vehicle(); // Reset the vehicle object after saving
+        vehicle = new Vehicle();
         return "vehicles";
     }
 

@@ -10,13 +10,10 @@
     <class>org.example.demo.Entity.Vehicle</class>
 
     <properties>
-      <!-- Update the schema generation strategy -->
       <property name="javax.persistence.schema-generation.database.action" value="create"/>
 
-      <!-- PostgreSQL dialect for Hibernate -->
       <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
 
-      <!-- Optional: Show SQL for debugging -->
       <property name="hibernate.show_sql" value="true"/>
       <property name="hibernate.format_sql" value="true"/>
     </properties>

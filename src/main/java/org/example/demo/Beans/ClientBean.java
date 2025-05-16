@@ -37,7 +37,7 @@ public class ClientBean {
 
     public String saveClient() {
         dealerService.addClient(client);
-        client = new Client(); // Reset the client object after saving
+        client = new Client();
         return "clients";
     }
 }
