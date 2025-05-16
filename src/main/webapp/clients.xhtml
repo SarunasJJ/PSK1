@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+  <title>Clients</title>
+  <h:outputStylesheet library="css" name="style.css"/>
+</h:head>
+<h:body>
+  <h1>Client List</h1>
+
+  <h:form>
+    <h:dataTable value="#{clientBean.client}" var="client" styleClass="data-table">
+      <h:column>
+        <f:facet name="header">ID</f:facet>
+        #{client.id}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Name</f:facet>
+        #{client.name}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Email</f:facet>
+        #{client.email}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Phone</f:facet>
+        #{client.phone}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Actions</f:facet>
+        <h:commandButton value="View Vehicles" action="#{clientBean.viewClientVehicles(client.id)}" styleClass="btn"/>
+      </h:column>
+    </h:dataTable>
+
+    <h2>Add New Client</h2>
+    <div class="form-group">
+      <h:outputLabel for="name">Name:</h:outputLabel>
+      <h:inputText id="name" value="#{clientBean.client.name}" required="true"/>
+    </div>
+    <div class="form-group">
+      <h:outputLabel for="email">Email:</h:outputLabel>
+      <h:inputText id="email" value="#{clientBean.client.email}" required="true"/>
+    </div>
+    <div class="form-group">
+      <h:outputLabel for="phone">Phone:</h:outputLabel>
+      <h:inputText id="phone" value="#{clientBean.client.phone}" required="true"/>
+    </div>
+    <h:commandButton value="Save Client" action="#{clientBean.saveClient}" styleClass="btn"/>
+  </h:form>
+</h:body>
+</html>

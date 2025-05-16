@@ -1,29 +1,26 @@
 package org.example.demo.Entity;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@Table(name = "vehicles")
 public class Vehicle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Column(unique = true)
-    private String licensePlate;
+    private Long id;
 
     private String manufacturer;
     private String model;
     private int year;
-    private String color;
-    private String type;
+    private double price;
 
-    @ManyToMany(mappedBy = "vehicles")
-    private List<Client> clients;
-
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private Client owner;
 }

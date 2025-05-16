@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+  <title>Salespeople</title>
+  <h:outputStylesheet library="css" name="style.css"/>
+</h:head>
+<h:body>
+  <h1>Salespeople List</h1>
+
+  <h:form>
+    <h:dataTable value="#{salesPersonBean.salesPerson}" var="salesperson" styleClass="data-table">
+      <h:column>
+        <f:facet name="header">ID</f:facet>
+        #{salesperson.id}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Name</f:facet>
+        #{salesperson.name}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Email</f:facet>
+        #{salesperson.email}
+      </h:column>
+      <h:column>
+        <f:facet name="header">Phone</f:facet>
+        #{salesperson.phone}
+      </h:column>
+    </h:dataTable>
+
+    <h2>Add New Salesperson</h2>
+    <div class="form-group">
+      <h:outputLabel for="name">First Name:</h:outputLabel>
+      <h:inputText id="name" value="#{salesPersonBean.salesPerson.name}" required="true"/>
+    </div>
+    <div class="form-group">
+      <h:outputLabel for="email">Email:</h:outputLabel>
+      <h:inputText id="email" value="#{salesPersonBean.salesPerson.email}" required="true"/>
+    </div>
+    <div class="form-group">
+      <h:outputLabel for="phone">Phone:</h:outputLabel>
+      <h:inputText id="phone" value="#{salesPersonBean.salesPerson.phone}" required="true"/>
+    </div>
+    <h:commandButton value="Save Salesperson" action="#{salesPersonBean.saveSalesperson}" styleClass="btn"/>
+  </h:form>
+</h:body>
+</html>
