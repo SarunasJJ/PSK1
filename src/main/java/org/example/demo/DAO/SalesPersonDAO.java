@@ -1,9 +1,7 @@
 package org.example.demo.DAO;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -12,12 +10,10 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.example.demo.Entity.SalesPerson;
 import org.example.demo.Mappers.SalesPersonMapper;
 
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
 import java.io.InputStream;
 import java.util.List;
 
-@ApplicationScoped  // Changed to ApplicationScoped to ensure session lives longer
+@ApplicationScoped
 public class SalesPersonDAO {
     private SqlSessionFactory sqlSessionFactory;
 

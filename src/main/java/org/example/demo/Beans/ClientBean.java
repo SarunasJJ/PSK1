@@ -1,6 +1,5 @@
 package org.example.demo.Beans;
 
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
@@ -13,7 +12,6 @@ import org.example.demo.Services.DealerService;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Getter
 @Setter
@@ -34,16 +32,13 @@ public class ClientBean implements Serializable {
 
     public String viewClientVehicles(Long clientId) {
         try {
-            // Get a fresh instance of the client
             selectedClient = dealerService.getClientById(clientId);
             if (selectedClient == null) {
                 return "clients?faces-redirect=true";
             }
 
-            // Fetch vehicles directly from the database
             clientVehicles = dealerService.getVehiclesByClientId(clientId);
 
-            // Log the number of vehicles found (for debugging)
             System.out.println("Found " + clientVehicles.size() + " vehicles for client ID: " + clientId);
 
             return "clientVehicles?faces-redirect=true";

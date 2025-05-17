@@ -12,13 +12,12 @@ import org.example.demo.Services.DealerService;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Named
-@SessionScoped  // Changed to SessionScoped to maintain state between requests
+@SessionScoped
 public class VehicleBean implements Serializable {
     @Inject
     private DealerService dealerService;
