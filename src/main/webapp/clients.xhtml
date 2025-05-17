@@ -30,7 +30,9 @@
       </h:column>
       <h:column>
         <f:facet name="header">Actions</f:facet>
-        <h:commandButton value="View Vehicles" action="#{clientBean.viewClientVehicles(client.id)}" styleClass="btn"/>
+        <h:commandButton value="View Vehicles" action="#{clientBean.viewClientVehicles(client.id)}" styleClass="btn">
+          <f:ajax execute="@this" render="@form"/>
+        </h:commandButton>
       </h:column>
     </h:dataTable>
 

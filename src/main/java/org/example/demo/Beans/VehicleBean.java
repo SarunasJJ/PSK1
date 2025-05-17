@@ -1,6 +1,6 @@
 package org.example.demo.Beans;
 
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.Getter;
@@ -10,14 +10,16 @@ import org.example.demo.Entity.Client;
 import org.example.demo.Entity.Vehicle;
 import org.example.demo.Services.DealerService;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Named
-@RequestScoped
-public class VehicleBean {
+@SessionScoped  // Changed to SessionScoped to maintain state between requests
+public class VehicleBean implements Serializable {
     @Inject
     private DealerService dealerService;
 
@@ -32,22 +34,38 @@ public class VehicleBean {
     }
 
     public String saveVehicle() {
-        dealerService.addVehicle(vehicle);
-        vehicle = new Vehicle();
-        return "vehicles";
+        try {
+            dealerService.addVehicle(vehicle);
+            vehicle = new Vehicle();
+            return "vehicles?faces-redirect=true";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "vehicles?faces-redirect=true";
+        }
     }
 
     public String assignOwner(Long vehicleId) {
-        this.vehicleId = vehicleId;
-        allClients = dealerService.getAllClients();
-        return "assign-owner";
+        try {
+            this.vehicleId = vehicleId;
+            allClients = dealerService.getAllClients();
+            return "assign-owner?faces-redirect=true";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "vehicles?faces-redirect=true";
+        }
     }
 
     public String purchaseVehicle() {
-        dealerService.purchaseVehicle(vehicleId, clientId);
-        return "vehicles";
+        try {
+            if (vehicleId == null || clientId == null) {
+                return "vehicles?faces-redirect=true";
+            }
+
+            dealerService.purchaseVehicle(vehicleId, clientId);
+            return "vehicles?faces-redirect=true";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "vehicles?faces-redirect=true";
+        }
     }
-
-
-
 }

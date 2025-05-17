@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config xmlns="https://jakarta.ee/xml/ns/jakartaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-facesconfig_4_0.xsd"
+              version="4.0">
+
+  <!-- Navigation Rules -->
+  <navigation-rule>
+    <from-view-id>/clients.xhtml</from-view-id>
+    <navigation-case>
+      <from-outcome>clientVehicles</from-outcome>
+      <to-view-id>/clientVehicles.xhtml</to-view-id>
+      <redirect/>
+    </navigation-case>
+  </navigation-rule>
+
+  <navigation-rule>
+    <from-view-id>/vehicles.xhtml</from-view-id>
+    <navigation-case>
+      <from-outcome>assign-owner</from-outcome>
+      <to-view-id>/assign-owner.xhtml</to-view-id>
+      <redirect/>
+    </navigation-case>
+  </navigation-rule>
+
+  <!-- Default Navigation -->
+  <navigation-rule>
+    <from-view-id>/*</from-view-id>
+    <navigation-case>
+      <from-outcome>index</from-outcome>
+      <to-view-id>/index.xhtml</to-view-id>
+      <redirect/>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>clients</from-outcome>
+      <to-view-id>/clients.xhtml</to-view-id>
+      <redirect/>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>vehicles</from-outcome>
+      <to-view-id>/vehicles.xhtml</to-view-id>
+      <redirect/>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>salesperson</from-outcome>
+      <to-view-id>/salesperson.xhtml</to-view-id>
+      <redirect/>
+    </navigation-case>
+  </navigation-rule>
+
+</faces-config>

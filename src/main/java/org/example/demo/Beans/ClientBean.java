@@ -10,14 +10,16 @@ import org.example.demo.Entity.Client;
 import org.example.demo.Entity.Vehicle;
 import org.example.demo.Services.DealerService;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Named
 @RequestScoped
-public class ClientBean {
+public class ClientBean implements Serializable {
     @Inject
     private DealerService dealerService;
 
@@ -30,14 +32,28 @@ public class ClientBean {
     }
 
     public String viewClientVehicles(Long clientId) {
-        selectedClient = dealerService.getClientById(clientId);
-        clientVehicles = dealerService.getVehiclesByClientId(clientId);
-        return "clientVehicles";
+        try {
+            selectedClient = dealerService.getClientById(clientId);
+            if (selectedClient == null) {
+                return "clients?faces-redirect=true";
+            }
+
+            clientVehicles = dealerService.getVehiclesByClientId(clientId);
+            return "clientVehicles?faces-redirect=true";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "clients?faces-redirect=true";
+        }
     }
 
     public String saveClient() {
-        dealerService.addClient(client);
-        client = new Client();
-        return "clients";
+        try {
+            dealerService.addClient(client);
+            client = new Client();
+            return "clients?faces-redirect=true";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "clients?faces-redirect=true";
+        }
     }
 }
