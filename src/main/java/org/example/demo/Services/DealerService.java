@@ -29,8 +29,18 @@ public class DealerService {
         Client client = clientDAO.findById(clientId);
 
         if (vehicle != null && client != null) {
+            if (vehicle.getOwner() != null) {
+                Client oldOwner = vehicle.getOwner();
+                oldOwner.getVehicles().remove(vehicle);
+                clientDAO.save(oldOwner);
+            }
+
             vehicle.setOwner(client);
-            client.getVehicles().add(vehicle);
+
+            if (!client.getVehicles().contains(vehicle)) {
+                client.getVehicles().add(vehicle);
+            }
+
             vehicleDAO.save(vehicle);
             clientDAO.save(client);
         }

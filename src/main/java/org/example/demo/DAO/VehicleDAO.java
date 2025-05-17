@@ -40,7 +40,9 @@ public class VehicleDAO {
     }
 
     public List<Vehicle> findByOwnerId(Long ownerId) {
-        return entityManager.createQuery("SELECT v FROM Vehicle v WHERE v.owner.id = :ownerId", Vehicle.class)
+        return entityManager.createQuery(
+                        "SELECT v FROM Vehicle v WHERE v.owner.id = :ownerId",
+                        Vehicle.class)
                 .setParameter("ownerId", ownerId)
                 .getResultList();
     }

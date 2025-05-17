@@ -1,6 +1,7 @@
 package org.example.demo.Beans;
 
 import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import lombok.Getter;
@@ -18,7 +19,7 @@ import java.util.logging.Logger;
 @Setter
 @NoArgsConstructor
 @Named
-@RequestScoped
+@SessionScoped
 public class ClientBean implements Serializable {
     @Inject
     private DealerService dealerService;
@@ -33,12 +34,18 @@ public class ClientBean implements Serializable {
 
     public String viewClientVehicles(Long clientId) {
         try {
+            // Get a fresh instance of the client
             selectedClient = dealerService.getClientById(clientId);
             if (selectedClient == null) {
                 return "clients?faces-redirect=true";
             }
 
+            // Fetch vehicles directly from the database
             clientVehicles = dealerService.getVehiclesByClientId(clientId);
+
+            // Log the number of vehicles found (for debugging)
+            System.out.println("Found " + clientVehicles.size() + " vehicles for client ID: " + clientId);
+
             return "clientVehicles?faces-redirect=true";
         } catch (Exception e) {
             e.printStackTrace();
