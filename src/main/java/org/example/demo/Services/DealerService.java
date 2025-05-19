@@ -2,6 +2,7 @@ package org.example.demo.Services;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.OptimisticLockException;
 import jakarta.transaction.Transactional;
 import org.example.demo.DAO.ClientDAO;
 import org.example.demo.DAO.SalesPersonDAO;
@@ -43,6 +44,15 @@ public class DealerService {
 
             vehicleDAO.save(vehicle);
             clientDAO.save(client);
+        }
+    }
+
+    @Transactional
+    public void updateVehicle(Vehicle vehicle) {
+        try {
+            vehicleDAO.save(vehicle);
+        } catch (OptimisticLockException e) {
+            throw e;
         }
     }
 

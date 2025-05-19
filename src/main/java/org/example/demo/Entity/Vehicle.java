@@ -20,6 +20,9 @@ public class Vehicle {
     private int year;
     private double price;
 
+    @Version
+    private Integer version;
+    
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client owner;

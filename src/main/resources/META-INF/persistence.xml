@@ -10,7 +10,7 @@
     <class>org.example.demo.Entity.Vehicle</class>
 
     <properties>
-      <property name="javax.persistence.schema-generation.database.action" value="create"/>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
 
       <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
 

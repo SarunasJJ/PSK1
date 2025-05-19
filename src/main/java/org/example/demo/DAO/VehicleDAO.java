@@ -3,7 +3,6 @@ package org.example.demo.DAO;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Transient;
 import jakarta.transaction.Transactional;
 import org.example.demo.Entity.Vehicle;
 
