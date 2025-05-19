@@ -25,39 +25,32 @@ public class AsyncDemo extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
-
         try {
             Future<Double> futureValue = asyncService.calculateTotalInventoryValue();
 
-            out.println("<p>Asynchronous calculation started.</p>");
-            out.println("<p>The servlet continues processing while calculation is running...</p>");
+            System.out.println("DEMO: Asynchronous calculation started.");
 
-            out.println("<p>Doing other work in the servlet...</p>");
-
-            if (futureValue.isDone()) {
-                out.println("<p>Calculation finished very quickly!</p>");
+            if (futureValue != null && futureValue.isDone()) {
+                System.out.println("DEMO: Asynchronous calculation completed immediately.");
                 out.println("<p>Total inventory value: $" + futureValue.get() + "</p>");
             } else {
-                out.println("<p>Calculation is still in progress...</p>");
+                System.out.println("DEMO: Asynchronous calculation is still running.");
 
                 try {
-                    Double value = futureValue.get(2, TimeUnit.SECONDS);
-                    out.println("<p>Calculation completed within our wait time.</p>");
+                    Double value = futureValue.get(10, TimeUnit.SECONDS);
+                    System.out.println("DEMO: Asynchronous calculation completed within 10 seconds.");
                     out.println("<p>Total inventory value: $" + value + "</p>");
                 } catch (TimeoutException e) {
-                    out.println("<p>Calculation is taking longer than our wait time.</p>");
-                    out.println("<p>In a real application, we would handle this with:</p>");
-                    out.println("<ul>");
-                    out.println("<li>JavaScript polling from the client</li>");
-                    out.println("<li>WebSockets for server push</li>");
-                    out.println("<li>Server-Sent Events</li>");
-                    out.println("<li>A callback mechanism</li>");
-                    out.println("</ul>");
+                    System.out.println("DEMO: Asynchronous calculation timed out.");
                 }
             }
         } catch (InterruptedException | ExecutionException e) {
             out.println("<p>Error during asynchronous operation: " + e.getMessage() + "</p>");
+            e.printStackTrace();
             Thread.currentThread().interrupt();
+        } catch (Exception e) {
+            out.println("<p>Unexpected error: " + e.getMessage() + "</p>");
+            e.printStackTrace();
         }
         out.println("</body></html>");
     }
