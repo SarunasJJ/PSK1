@@ -10,7 +10,6 @@ import java.util.List;
 
 @Path("/vehicles")
 @Produces("application/json")
-@Consumes("application/json")
 public class VehicleResource {
     @Inject
     private DealerService dealerService;
@@ -23,7 +22,7 @@ public class VehicleResource {
 
     @GET
     @Path("/{id}")
-    public Response getVehicleById(Long id) {
+    public Response getVehicleById(@PathParam("id") Long id) {
         Vehicle vehicle = dealerService.getVehicleById(id);
         if (vehicle == null) {
             return Response.status(Response.Status.NOT_FOUND).build();

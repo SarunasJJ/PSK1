@@ -15,12 +15,14 @@ public class VehicleDAO implements IVehicleDAO{
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Transactional
     public Vehicle findById(Long id) {
         return entityManager.find(Vehicle.class, id);
     }
 
+    @Transactional
     public List<Vehicle> findAll() {
-        return entityManager.createQuery("SELECT v FROM Vehicle v", Vehicle.class).getResultList();
+        return entityManager.createQuery("SELECT v FROM Vehicle v LEFT JOIN FETCH v.owner", Vehicle.class).getResultList();
     }
 
     @Transactional

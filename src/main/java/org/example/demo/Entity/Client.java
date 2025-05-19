@@ -1,5 +1,6 @@
 package org.example.demo.Entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,5 +27,6 @@ public class Client {
     private String phone;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @JsonbTransient
     private List<Vehicle> vehicles = new ArrayList<>();
 }
