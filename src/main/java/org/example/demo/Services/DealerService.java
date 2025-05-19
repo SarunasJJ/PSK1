@@ -57,6 +57,19 @@ public class DealerService {
         }
     }
 
+    @Transactional
+    public void deleteVehicle(Long vehicleId) {
+        Vehicle vehicle = vehicleDAO.findById(vehicleId);
+        if (vehicle != null) {
+            Client client = vehicle.getOwner();
+            if (client != null) {
+                client.getVehicles().remove(vehicle);
+                clientDAO.save(client);
+            }
+            vehicleDAO.delete(vehicleId);
+        }
+    }
+
     public List<Client> getAllClients() {
         return clientDAO.findAll();
     }

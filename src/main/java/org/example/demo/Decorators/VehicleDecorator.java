@@ -7,7 +7,6 @@ import org.example.demo.DAO.IVehicleDAO;
 import org.example.demo.DAO.VehicleDAO;
 import org.example.demo.Entity.Vehicle;
 
-import java.sql.SQLOutput;
 import java.util.List;
 
 @Decorator
