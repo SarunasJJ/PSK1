@@ -3,4 +3,16 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/beans_4_1.xsd">
 
+  <!--
+  <alternatives>
+    <class>org.example.demo.Services.AlternativeDealerService</class>
+  </alternatives>
+  -->
+  <interceptors>
+    <class>org.example.demo.Interceptors.LoggingInterceptor</class>
+  </interceptors>
+
+  <decorators>
+    <class>org.example.demo.Decorators.VehicleDecorator</class>
+  </decorators>
 </beans>

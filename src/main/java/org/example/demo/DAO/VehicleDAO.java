@@ -5,11 +5,13 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.example.demo.Entity.Vehicle;
+import org.example.demo.Interceptors.Loggable;
 
 import java.util.List;
 
+@Loggable
 @RequestScoped
-public class VehicleDAO {
+public class VehicleDAO implements IVehicleDAO{
     @PersistenceContext
     private EntityManager entityManager;
 
