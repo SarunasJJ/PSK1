@@ -74,7 +74,6 @@ public class DealerService {
         return clientDAO.findAll();
     }
 
-    @Transactional
     public List<Vehicle> getAllVehicles() {
         return vehicleDAO.findAll();
     }
@@ -91,7 +90,6 @@ public class DealerService {
         return clientDAO.findById(clientId);
     }
 
-    @Transactional
     public Vehicle getVehicleById(Long vehicleId) {
         return vehicleDAO.findById(vehicleId);
     }
