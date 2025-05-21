@@ -23,6 +23,7 @@
     </navigation-case>
   </navigation-rule>
 
+
   <!-- Default Navigation -->
   <navigation-rule>
     <from-view-id>/*</from-view-id>
@@ -44,6 +45,11 @@
     <navigation-case>
       <from-outcome>salesperson</from-outcome>
       <to-view-id>/salesperson.xhtml</to-view-id>
+      <redirect/>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>async-demo</from-outcome>
+      <to-view-id>/asyncDemo.xhtml</to-view-id>
       <redirect/>
     </navigation-case>
   </navigation-rule>

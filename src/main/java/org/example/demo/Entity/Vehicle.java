@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -26,4 +29,20 @@ public class Vehicle {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client owner;
+
+    @ManyToMany
+    @JoinTable(name = "purchased_vehicle_options",
+            joinColumns = @JoinColumn(name = "vehicle_id"),
+            inverseJoinColumns = @JoinColumn(name = "option_id"))
+    private Set<VehicleOption> options = new HashSet<>();
+
+    public void addOption(VehicleOption option) {
+        this.options.add(option);
+        option.getVehicles().add(this);
+    }
+
+    public void removeOption(VehicleOption option) {
+        this.options.remove(option);
+        option.getVehicles().remove(this);
+    }
 }

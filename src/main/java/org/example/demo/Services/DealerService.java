@@ -7,12 +7,15 @@ import jakarta.transaction.Transactional;
 import org.example.demo.DAO.ClientDAO;
 import org.example.demo.DAO.SalesPersonDAO;
 import org.example.demo.DAO.VehicleDAO;
+import org.example.demo.DAO.VehicleOptionDAO;
 import org.example.demo.Entity.Client;
 import org.example.demo.Entity.SalesPerson;
 import org.example.demo.Entity.Vehicle;
+import org.example.demo.Entity.VehicleOption;
 import org.example.demo.Interceptors.Loggable;
 
 import java.util.List;
+import java.util.Set;
 
 @ApplicationScoped
 public class DealerService {
@@ -24,6 +27,9 @@ public class DealerService {
 
     @Inject
     private SalesPersonDAO salesPersonDAO;
+
+    @Inject
+    private VehicleOptionDAO vehicleOptionDAO;
 
     @Transactional
     public void purchaseVehicle(Long vehicleId, Long clientId) {
@@ -45,6 +51,26 @@ public class DealerService {
 
             vehicleDAO.save(vehicle);
             clientDAO.save(client);
+        }
+    }
+
+    @Transactional
+    public void assignOptionsToVehicle(Long vehicleId, List<Long> optionIds) {
+        Vehicle vehicle = vehicleDAO.findById(vehicleId);
+        if(vehicle != null){
+            Set<VehicleOption> currentOptions = vehicle.getOptions();
+            for(VehicleOption option : currentOptions){
+                option.getVehicles().remove(vehicle);
+            }
+            currentOptions.clear();
+
+            for(Long optionId : optionIds){
+                VehicleOption option = vehicleOptionDAO.findById(optionId);
+                if(option != null){
+                    vehicle.addOption(option);
+                }
+            }
+            vehicleDAO.save(vehicle);
         }
     }
 
@@ -82,6 +108,10 @@ public class DealerService {
         return salesPersonDAO.findAll();
     }
 
+    public List<VehicleOption> getAllVehicleOptions() {
+        return vehicleOptionDAO.findAll();
+    }
+
     public List<Vehicle> getVehiclesByClientId(Long clientId) {
         return vehicleDAO.findByOwnerId(clientId);
     }
@@ -92,6 +122,10 @@ public class DealerService {
 
     public Vehicle getVehicleById(Long vehicleId) {
         return vehicleDAO.findById(vehicleId);
+    }
+
+    public VehicleOption getVehicleOptionById(Long vehicleOptionId) {
+        return vehicleOptionDAO.findById(vehicleOptionId);
     }
 
     public SalesPerson getSalesPersonById(Long salesPersonId) {
@@ -111,5 +145,10 @@ public class DealerService {
     @Transactional
     public void addSalesPerson(SalesPerson salesPerson) {
         salesPersonDAO.save(salesPerson);
+    }
+
+    @Transactional
+    public void addVehicleOption(VehicleOption vehicleOption) {
+        vehicleOptionDAO.save(vehicleOption);
     }
 }
