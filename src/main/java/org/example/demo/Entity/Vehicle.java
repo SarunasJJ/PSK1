@@ -37,7 +37,6 @@ public class Vehicle {
     @JoinTable(name = "purchased_vehicle_options",
             joinColumns = @JoinColumn(name = "vehicle_id"),
             inverseJoinColumns = @JoinColumn(name = "option_id"))
-    @JsonbTransient
     private Set<VehicleOption> options = new HashSet<>();
 
     public void addOption(VehicleOption option) {

@@ -26,10 +26,8 @@ public class MultiTabOptimisticBean implements Serializable {
     private String errorMessage = "";
     private String successMessage = "";
 
-    // Fields for editing
     private Double newPrice;
 
-    // Store the version when vehicle is loaded (simulates what each tab "remembers")
     private Integer loadedVersion;
 
     public List<Vehicle> getAllVehicles() {
@@ -43,7 +41,6 @@ public class MultiTabOptimisticBean implements Serializable {
             try {
                 vehicle = dealerService.getVehicleById(selectedVehicleId);
                 if (vehicle != null) {
-                    // Initialize form fields and remember the version this tab loaded
                     newPrice = vehicle.getPrice();
                     loadedVersion = vehicle.getVersion();
 
@@ -60,7 +57,7 @@ public class MultiTabOptimisticBean implements Serializable {
         } else {
             errorMessage = "Please select a vehicle first!";
         }
-        return null; // Stay on same page
+        return null;
     }
 
     public String updateVehicle() {
@@ -83,7 +80,6 @@ public class MultiTabOptimisticBean implements Serializable {
         }
 
         try {
-            // Get the vehicle we originally loaded (with the old version)
             Vehicle vehicleToUpdate = new Vehicle();
             vehicleToUpdate.setId(selectedVehicleId);
             vehicleToUpdate.setVersion(loadedVersion); // Use the version this tab remembers
@@ -94,13 +90,10 @@ public class MultiTabOptimisticBean implements Serializable {
             vehicleToUpdate.setOwner(vehicle.getOwner());
             vehicleToUpdate.setOptions(vehicle.getOptions());
 
-            // This will throw OptimisticLockException if version changed
             dealerService.updateVehicle(vehicleToUpdate);
 
-            // If we get here, update was successful
-            // Refresh the vehicle to get the new version
             vehicle = dealerService.getVehicleById(selectedVehicleId);
-            loadedVersion = vehicle.getVersion(); // Update our loaded version
+            loadedVersion = vehicle.getVersion();
 
             successMessage = "Vehicle updated successfully! New version: " + vehicle.getVersion();
             errorMessage = "";
@@ -113,13 +106,12 @@ public class MultiTabOptimisticBean implements Serializable {
 
             System.out.println("OptimisticLockException caught: " + e.getMessage());
 
-            // Reload current data to show what's actually in the database
             try {
                 vehicle = dealerService.getVehicleById(selectedVehicleId);
                 newPrice = vehicle.getPrice();
                 errorMessage += " Current data: $" + vehicle.getPrice() + " (version " + vehicle.getVersion() + ")";
             } catch (Exception ex) {
-                // Ignore refresh error
+                // ignore
             }
 
         } catch (Exception e) {
@@ -127,7 +119,7 @@ public class MultiTabOptimisticBean implements Serializable {
             successMessage = "";
             e.printStackTrace();
         }
-        return null; // Stay on same page
+        return null;
     }
 
     public String resetForm() {
@@ -137,7 +129,7 @@ public class MultiTabOptimisticBean implements Serializable {
         loadedVersion = null;
         errorMessage = "";
         successMessage = "";
-        return null; // Stay on same page
+        return null;
     }
 
     public boolean isVehicleLoaded() {
