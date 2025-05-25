@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+  <title>Multi-Tab Optimistic Locking Demo</title>
+  <h:outputStylesheet library="css" name="style.css"/>
+  <style>
+      .demo-container {
+          max-width: 600px;
+          margin: 20px auto;
+          padding: 20px;
+          border: 2px solid #ddd;
+          border-radius: 8px;
+          background-color: #f9f9f9;
+      }
+
+      .vehicle-info {
+          background-color: #e7e7e7;
+          padding: 15px;
+          margin: 15px 0;
+          border-radius: 4px;
+      }
+
+      .message {
+          padding: 10px;
+          margin: 10px 0;
+          border-radius: 4px;
+          background-color: #dff0d8;
+          border: 1px solid #d6e9c6;
+          color: #3c763d;
+      }
+
+      .error {
+          background-color: #f2dede;
+          border: 1px solid #ebccd1;
+          color: #a94442;
+      }
+  </style>
+</h:head>
+<h:body>
+  <h1>Update vehicle price</h1>
+
+  <div class="demo-container">
+    <h:form id="optimisticForm">
+
+      <!-- Vehicle Selection -->
+      <div class="form-group">
+        <h:outputLabel for="vehicleSelect">Select Vehicle:</h:outputLabel>
+        <h:selectOneMenu id="vehicleSelect" value="#{multiTabOptimisticBean.selectedVehicleId}">
+          <f:selectItem itemLabel="-- Select a Vehicle --" itemValue=""/>
+          <f:selectItems value="#{multiTabOptimisticBean.allVehicles}" var="vehicle"
+                         itemLabel="#{vehicle.manufacturer} #{vehicle.model} - $#{vehicle.price}"
+                         itemValue="#{vehicle.id}"/>
+        </h:selectOneMenu>
+
+        <h:commandButton value="Load Vehicle"
+                         action="#{multiTabOptimisticBean.loadVehicle}"
+                         styleClass="btn">
+          <f:ajax execute="vehicleSelect @this" render="@form"/>
+        </h:commandButton>
+      </div>
+
+      <!-- Messages -->
+      <h:panelGroup rendered="#{not empty multiTabOptimisticBean.successMessage}">
+        <div class="message">#{multiTabOptimisticBean.successMessage}</div>
+      </h:panelGroup>
+
+      <h:panelGroup rendered="#{not empty multiTabOptimisticBean.errorMessage}">
+        <div class="message error">#{multiTabOptimisticBean.errorMessage}</div>
+      </h:panelGroup>
+
+      <!-- Vehicle Information and Edit Form -->
+      <h:panelGroup rendered="#{multiTabOptimisticBean.vehicleLoaded}">
+
+        <div class="vehicle-info">
+          <p><strong>Vehicle:</strong> #{multiTabOptimisticBean.vehicle.manufacturer} #{multiTabOptimisticBean.vehicle.model}</p>
+          <p><strong>Year:</strong> #{multiTabOptimisticBean.vehicle.year}</p>
+          <p><strong>Price:</strong> $#{multiTabOptimisticBean.vehicle.price}</p>
+          <p><strong>Current Version:</strong> #{multiTabOptimisticBean.vehicle.version}</p>
+          <p><strong>Loaded Version:</strong> #{multiTabOptimisticBean.loadedVersion}</p>
+        </div>
+
+        <div class="form-group">
+          <h:outputLabel for="newPrice">New Price:</h:outputLabel>
+          <h:inputText id="newPrice" value="#{multiTabOptimisticBean.newPrice}"/>
+        </div>
+
+        <h:commandButton value="Update Vehicle"
+                         action="#{multiTabOptimisticBean.updateVehicle}"
+                         styleClass="btn">
+          <f:ajax execute="@form" render="@form"/>
+        </h:commandButton>
+      </h:panelGroup>
+
+    </h:form>
+  </div>
+
+  <div style="margin-top: 20px; text-align: center;">
+    <h:link outcome="index" value="Back to Home" styleClass="btn"/>
+  </div>
+</h:body>
+</html>

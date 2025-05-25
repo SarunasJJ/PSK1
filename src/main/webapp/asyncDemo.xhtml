@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<h:head>
+  <title>Calculation</title>
+  <h:outputStylesheet library="css" name="style.css"/>
+  <style>
+      .demo-container {
+          max-width: 600px;
+          margin: 20px auto;
+          padding: 20px;
+          border: 2px solid #ddd;
+          border-radius: 8px;
+          background-color: #f9f9f9;
+          text-align: center;
+      }
+
+      .result {
+          padding: 20px;
+          margin: 20px 0;
+          border-radius: 8px;
+          background-color: #dff0d8;
+          border: 2px solid #d6e9c6;
+          color: #3c763d;
+          font-size: 24px;
+          font-weight: bold;
+      }
+
+      .error {
+          background-color: #f2dede;
+          border: 2px solid #ebccd1;
+          color: #a94442;
+      }
+
+      .calculating {
+          padding: 20px;
+          margin: 20px 0;
+          border-radius: 8px;
+          background-color: #d9edf7;
+          border: 2px solid #bce8f1;
+          color: #31708f;
+          font-size: 18px;
+      }
+
+      .big-button {
+          font-size: 18px;
+          padding: 15px 30px;
+          margin: 10px;
+      }
+  </style>
+</h:head>
+<h:body>
+  <div class="demo-container">
+    <h:form id="asyncForm">
+
+      <!-- Start button -->
+      <h:panelGroup rendered="#{not AsyncDemoBean.calculationInProgress and empty AsyncDemoBean.result and empty AsyncDemoBean.errorMessage}">
+        <h:commandButton value="Calculate inventory value"
+                         action="#{AsyncDemoBean.startCalculation}"
+                         styleClass="btn big-button">
+          <f:ajax execute="@form" render="@form"/>
+        </h:commandButton>
+      </h:panelGroup>
+
+      <h:panelGroup rendered="#{AsyncDemoBean.calculationInProgress}">
+        <div class="calculating">
+          <h3>Calculation started...</h3>
+          <p>#{AsyncDemoBean.calculationStatus}</p>
+
+          <h:commandButton value="Check Status"
+                           action="#{AsyncDemoBean.checkResult}"
+                           styleClass="btn">
+            <f:ajax execute="@form" render="@form"/>
+          </h:commandButton>
+        </div>
+      </h:panelGroup>
+
+      <h:panelGroup rendered="#{not empty AsyncDemoBean.result}">
+        <div class="result">
+          #{AsyncDemoBean.result}
+        </div>
+
+        <h:commandButton value="Reset"
+                         action="#{AsyncDemoBean.resetCalculation}"
+                         styleClass="btn big-button">
+          <f:ajax execute="@form" render="@form"/>
+        </h:commandButton>
+      </h:panelGroup>
+
+      <!-- Error display -->
+      <h:panelGroup rendered="#{not empty AsyncDemoBean.errorMessage}">
+        <div class="result error">
+          #{AsyncDemoBean.errorMessage}
+        </div>
+
+        <h:commandButton value="Reset"
+                         action="#{AsyncDemoBean.resetCalculation}"
+                         styleClass="btn big-button">
+          <f:ajax execute="@form" render="@form"/>
+        </h:commandButton>
+      </h:panelGroup>
+
+    </h:form>
+  </div>
+
+  <div style="margin-top: 30px; text-align: center;">
+    <h3>Test Page Responsiveness</h3>
+    <button onclick="alert('Page is responsive!')" class="btn">Test</button>
+  </div>
+
+  <div style="margin-top: 20px; text-align: center;">
+    <h:link outcome="index" value="Back to Home" styleClass="btn"/>
+  </div>
+</h:body>
+</html>

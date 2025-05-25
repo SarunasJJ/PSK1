@@ -2,7 +2,9 @@ package org.example.demo.Services;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.OptimisticLockException;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.example.demo.DAO.ClientDAO;
 import org.example.demo.DAO.SalesPersonDAO;
@@ -31,6 +33,9 @@ public class DealerService {
     @Inject
     private VehicleOptionDAO vehicleOptionDAO;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Transactional
     public void purchaseVehicle(Long vehicleId, Long clientId) {
         Vehicle vehicle = vehicleDAO.findById(vehicleId);
@@ -58,12 +63,14 @@ public class DealerService {
     public void assignOptionsToVehicle(Long vehicleId, List<Long> optionIds) {
         Vehicle vehicle = vehicleDAO.findById(vehicleId);
         if(vehicle != null){
+            // Clear existing options
             Set<VehicleOption> currentOptions = vehicle.getOptions();
             for(VehicleOption option : currentOptions){
                 option.getVehicles().remove(vehicle);
             }
             currentOptions.clear();
 
+            // Add new options
             for(Long optionId : optionIds){
                 VehicleOption option = vehicleOptionDAO.findById(optionId);
                 if(option != null){
@@ -77,7 +84,8 @@ public class DealerService {
     @Transactional
     public void updateVehicle(Vehicle vehicle) {
         try {
-            vehicleDAO.save(vehicle);
+            Vehicle managedVehicle = entityManager.merge(vehicle);
+            entityManager.flush();
         } catch (OptimisticLockException e) {
             throw e;
         }
@@ -96,38 +104,47 @@ public class DealerService {
         }
     }
 
+    @Transactional
     public List<Client> getAllClients() {
         return clientDAO.findAll();
     }
 
+    @Transactional
     public List<Vehicle> getAllVehicles() {
         return vehicleDAO.findAll();
     }
 
+    @Transactional
     public List<SalesPerson> getAllSalesPersons() {
         return salesPersonDAO.findAll();
     }
 
+    @Transactional
     public List<VehicleOption> getAllVehicleOptions() {
         return vehicleOptionDAO.findAll();
     }
 
+    @Transactional
     public List<Vehicle> getVehiclesByClientId(Long clientId) {
         return vehicleDAO.findByOwnerId(clientId);
     }
 
+    @Transactional
     public Client getClientById(Long clientId) {
         return clientDAO.findById(clientId);
     }
 
+    @Transactional
     public Vehicle getVehicleById(Long vehicleId) {
         return vehicleDAO.findById(vehicleId);
     }
 
+    @Transactional
     public VehicleOption getVehicleOptionById(Long vehicleOptionId) {
         return vehicleOptionDAO.findById(vehicleOptionId);
     }
 
+    @Transactional
     public SalesPerson getSalesPersonById(Long salesPersonId) {
         return salesPersonDAO.findById(salesPersonId);
     }

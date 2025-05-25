@@ -15,11 +15,22 @@ public class VehicleOptionDAO {
     private EntityManager entityManager;
 
     public VehicleOption findById(Long id) {
-        return entityManager.find(VehicleOption.class, id);
+        // Use JOIN FETCH to eagerly load vehicles
+        return entityManager.createQuery(
+                        "SELECT vo FROM VehicleOption vo LEFT JOIN FETCH vo.vehicles WHERE vo.id = :id",
+                        VehicleOption.class)
+                .setParameter("id", id)
+                .getResultStream()
+                .findFirst()
+                .orElse(null);
     }
 
     public List<VehicleOption> findAll() {
-        return entityManager.createQuery("SELECT vo FROM VehicleOption vo", VehicleOption.class).getResultList();
+        // Use JOIN FETCH to eagerly load vehicles
+        return entityManager.createQuery(
+                        "SELECT DISTINCT vo FROM VehicleOption vo LEFT JOIN FETCH vo.vehicles",
+                        VehicleOption.class)
+                .getResultList();
     }
 
     @Transactional
@@ -33,8 +44,14 @@ public class VehicleOptionDAO {
 
     @Transactional
     public void delete(Long id) {
-        VehicleOption vehicleOption = findById(id);
+        VehicleOption vehicleOption = entityManager.find(VehicleOption.class, id);
         if (vehicleOption != null) {
+            // Clear the many-to-many relationship first
+            for (Vehicle vehicle : vehicleOption.getVehicles()) {
+                vehicle.getOptions().remove(vehicleOption);
+            }
+            vehicleOption.getVehicles().clear();
+            entityManager.merge(vehicleOption);
             entityManager.remove(vehicleOption);
         }
     }

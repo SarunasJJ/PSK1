@@ -21,8 +21,21 @@
       <to-view-id>/assign-owner.xhtml</to-view-id>
       <redirect/>
     </navigation-case>
+    <navigation-case>
+      <from-outcome>assign-option</from-outcome>
+      <to-view-id>/assign-options.xhtml</to-view-id>
+      <redirect/>
+    </navigation-case>
   </navigation-rule>
 
+  <navigation-rule>
+    <from-view-id>/vehicleOption.xhtml</from-view-id>
+    <navigation-case>
+      <from-outcome>assign-options</from-outcome>
+      <to-view-id>/assign-options.xhtml</to-view-id>
+      <redirect/>
+    </navigation-case>
+  </navigation-rule>
 
   <!-- Default Navigation -->
   <navigation-rule>
@@ -43,12 +56,22 @@
       <redirect/>
     </navigation-case>
     <navigation-case>
+      <from-outcome>vehicleOption</from-outcome>
+      <to-view-id>/vehicleOption.xhtml</to-view-id>
+      <redirect/>
+    </navigation-case>
+    <navigation-case>
       <from-outcome>salesperson</from-outcome>
       <to-view-id>/salesperson.xhtml</to-view-id>
       <redirect/>
     </navigation-case>
     <navigation-case>
-      <from-outcome>async-demo</from-outcome>
+      <from-outcome>multiTabOptimisticDemo</from-outcome>
+      <to-view-id>/multiTabOptimisticDemo.xhtml</to-view-id>
+      <redirect/>
+    </navigation-case>
+    <navigation-case>
+      <from-outcome>asyncDemo</from-outcome>
       <to-view-id>/asyncDemo.xhtml</to-view-id>
       <redirect/>
     </navigation-case>

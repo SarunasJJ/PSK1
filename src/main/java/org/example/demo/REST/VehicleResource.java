@@ -1,6 +1,7 @@
 package org.example.demo.REST;
 
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import org.example.demo.Entity.Vehicle;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Path("/vehicles")
 @Produces("application/json")
+@Transactional
 public class VehicleResource {
     @Inject
     private DealerService dealerService;

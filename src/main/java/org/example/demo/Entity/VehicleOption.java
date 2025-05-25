@@ -1,5 +1,6 @@
 package org.example.demo.Entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +23,6 @@ public class VehicleOption {
     private double price;
 
     @ManyToMany(mappedBy = "options")
+    @JsonbTransient
     private Set<Vehicle> vehicles = new HashSet<>();
 }

@@ -16,11 +16,22 @@ public class VehicleDAO implements IVehicleDAO{
     private EntityManager entityManager;
 
     public Vehicle findById(Long id) {
-        return entityManager.find(Vehicle.class, id);
+        // Use JOIN FETCH to eagerly load options
+        return entityManager.createQuery(
+                        "SELECT v FROM Vehicle v LEFT JOIN FETCH v.options LEFT JOIN FETCH v.owner WHERE v.id = :id",
+                        Vehicle.class)
+                .setParameter("id", id)
+                .getResultStream()
+                .findFirst()
+                .orElse(null);
     }
 
     public List<Vehicle> findAll() {
-        return entityManager.createQuery("SELECT v FROM Vehicle v", Vehicle.class).getResultList();
+        // Use JOIN FETCH to eagerly load options and owner
+        return entityManager.createQuery(
+                        "SELECT DISTINCT v FROM Vehicle v LEFT JOIN FETCH v.options LEFT JOIN FETCH v.owner",
+                        Vehicle.class)
+                .getResultList();
     }
 
     @Transactional
@@ -34,15 +45,18 @@ public class VehicleDAO implements IVehicleDAO{
 
     @Transactional
     public void delete(Long id) {
-        Vehicle vehicle = findById(id);
+        Vehicle vehicle = entityManager.find(Vehicle.class, id);
         if (vehicle != null) {
+            // Clear the many-to-many relationship first
+            vehicle.getOptions().clear();
+            entityManager.merge(vehicle);
             entityManager.remove(vehicle);
         }
     }
 
     public List<Vehicle> findByOwnerId(Long ownerId) {
         return entityManager.createQuery(
-                        "SELECT v FROM Vehicle v WHERE v.owner.id = :ownerId",
+                        "SELECT DISTINCT v FROM Vehicle v LEFT JOIN FETCH v.options WHERE v.owner.id = :ownerId",
                         Vehicle.class)
                 .setParameter("ownerId", ownerId)
                 .getResultList();

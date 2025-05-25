@@ -37,8 +37,15 @@
         #{vehicle.owner != null ? vehicle.owner.name : 'No Owner'}
       </h:column>
       <h:column>
+        <f:facet name="header">Options</f:facet>
+        #{vehicle.options.size()} options
+      </h:column>
+      <h:column>
         <f:facet name="header">Actions</f:facet>
         <h:commandButton value="Assign Owner" action="#{vehicleBean.assignOwner(vehicle.id)}" styleClass="btn">
+          <f:ajax execute="@this" render="@form"/>
+        </h:commandButton>
+        <h:commandButton value="Manage Options" action="#{vehicleOptionBean.assignOptionsToVehicle(vehicle.id)}" styleClass="btn">
           <f:ajax execute="@this" render="@form"/>
         </h:commandButton>
       </h:column>
@@ -66,6 +73,7 @@
 
   <div style="margin-top: 20px;">
     <h:link outcome="index" value="Back to Home" styleClass="btn"/>
+    <h:link outcome="vehicleOption" value="Manage Vehicle Options" styleClass="btn"/>
   </div>
 </h:body>
 </html>

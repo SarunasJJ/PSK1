@@ -1,4 +1,5 @@
 package org.example.demo.Entity;
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,16 +25,19 @@ public class Vehicle {
     private double price;
 
     @Version
-    private Integer version;
-    
-    @ManyToOne
+    @Column(name = "version")
+    private Integer version = 0;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
+    @JsonbTransient
     private Client owner;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "purchased_vehicle_options",
             joinColumns = @JoinColumn(name = "vehicle_id"),
             inverseJoinColumns = @JoinColumn(name = "option_id"))
+    @JsonbTransient
     private Set<VehicleOption> options = new HashSet<>();
 
     public void addOption(VehicleOption option) {
