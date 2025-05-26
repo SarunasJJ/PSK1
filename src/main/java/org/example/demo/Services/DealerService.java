@@ -63,14 +63,12 @@ public class DealerService {
     public void assignOptionsToVehicle(Long vehicleId, List<Long> optionIds) {
         Vehicle vehicle = vehicleDAO.findById(vehicleId);
         if(vehicle != null){
-            // Clear existing options
             Set<VehicleOption> currentOptions = vehicle.getOptions();
             for(VehicleOption option : currentOptions){
                 option.getVehicles().remove(vehicle);
             }
             currentOptions.clear();
 
-            // Add new options
             for(Long optionId : optionIds){
                 VehicleOption option = vehicleOptionDAO.findById(optionId);
                 if(option != null){

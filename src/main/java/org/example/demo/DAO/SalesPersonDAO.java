@@ -29,14 +29,14 @@ public class SalesPersonDAO {
     }
 
     public SalesPerson findById(Long id) {
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {  // Auto-commit
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             SalesPersonMapper mapper = sqlSession.getMapper(SalesPersonMapper.class);
             return mapper.findById(id);
         }
     }
 
     public List<SalesPerson> findAll() {
-        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {  // Auto-commit
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             SalesPersonMapper mapper = sqlSession.getMapper(SalesPersonMapper.class);
             return mapper.findAll();
         }

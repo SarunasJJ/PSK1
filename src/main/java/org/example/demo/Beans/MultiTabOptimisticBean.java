@@ -82,7 +82,7 @@ public class MultiTabOptimisticBean implements Serializable {
         try {
             Vehicle vehicleToUpdate = new Vehicle();
             vehicleToUpdate.setId(selectedVehicleId);
-            vehicleToUpdate.setVersion(loadedVersion); // Use the version this tab remembers
+            vehicleToUpdate.setVersion(loadedVersion);
             vehicleToUpdate.setPrice(newPrice);
             vehicleToUpdate.setManufacturer(vehicle.getManufacturer());
             vehicleToUpdate.setModel(vehicle.getModel());
@@ -98,10 +98,10 @@ public class MultiTabOptimisticBean implements Serializable {
             successMessage = "Vehicle updated successfully! New version: " + vehicle.getVersion();
             errorMessage = "";
 
-            System.out.println("Update successful, new version: " + vehicle.getVersion());
+            System.out.println("Update successful new version: " + vehicle.getVersion());
 
         } catch (OptimisticLockException e) {
-            errorMessage = "REAL OPTIMISTIC LOCK EXCEPTION: " + e.getMessage();
+            errorMessage = "OPTIMISTIC LOCK EXCEPTION: " + e.getMessage();
             successMessage = "";
 
             System.out.println("OptimisticLockException caught: " + e.getMessage());

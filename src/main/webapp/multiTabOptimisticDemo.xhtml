@@ -45,7 +45,6 @@
   <div class="demo-container">
     <h:form id="optimisticForm">
 
-      <!-- Vehicle Selection -->
       <div class="form-group">
         <h:outputLabel for="vehicleSelect">Select Vehicle:</h:outputLabel>
         <h:selectOneMenu id="vehicleSelect" value="#{multiTabOptimisticBean.selectedVehicleId}">
@@ -62,7 +61,6 @@
         </h:commandButton>
       </div>
 
-      <!-- Messages -->
       <h:panelGroup rendered="#{not empty multiTabOptimisticBean.successMessage}">
         <div class="message">#{multiTabOptimisticBean.successMessage}</div>
       </h:panelGroup>
@@ -71,7 +69,6 @@
         <div class="message error">#{multiTabOptimisticBean.errorMessage}</div>
       </h:panelGroup>
 
-      <!-- Vehicle Information and Edit Form -->
       <h:panelGroup rendered="#{multiTabOptimisticBean.vehicleLoaded}">
 
         <div class="vehicle-info">

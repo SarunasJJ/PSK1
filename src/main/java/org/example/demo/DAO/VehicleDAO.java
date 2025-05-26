@@ -16,7 +16,6 @@ public class VehicleDAO implements IVehicleDAO{
     private EntityManager entityManager;
 
     public Vehicle findById(Long id) {
-        // Use JOIN FETCH to eagerly load options
         return entityManager.createQuery(
                         "SELECT v FROM Vehicle v LEFT JOIN FETCH v.options LEFT JOIN FETCH v.owner WHERE v.id = :id",
                         Vehicle.class)
@@ -27,7 +26,6 @@ public class VehicleDAO implements IVehicleDAO{
     }
 
     public List<Vehicle> findAll() {
-        // Use JOIN FETCH to eagerly load options and owner
         return entityManager.createQuery(
                         "SELECT DISTINCT v FROM Vehicle v LEFT JOIN FETCH v.options LEFT JOIN FETCH v.owner",
                         Vehicle.class)
@@ -47,7 +45,6 @@ public class VehicleDAO implements IVehicleDAO{
     public void delete(Long id) {
         Vehicle vehicle = entityManager.find(Vehicle.class, id);
         if (vehicle != null) {
-            // Clear the many-to-many relationship first
             vehicle.getOptions().clear();
             entityManager.merge(vehicle);
             entityManager.remove(vehicle);

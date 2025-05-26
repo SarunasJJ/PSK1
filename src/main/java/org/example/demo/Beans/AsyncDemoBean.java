@@ -63,6 +63,7 @@ public class AsyncDemoBean implements Serializable {
                     System.out.println("BEAN: Calculation completed with result: " + value);
                 } else {
                     System.out.println("BEAN: Calculation still in progress...");
+                    stateManager.setResult("Still calculating...");
                 }
             } catch (InterruptedException | ExecutionException e) {
                 System.err.println("BEAN: Error during calculation: " + e.getMessage());
@@ -84,11 +85,6 @@ public class AsyncDemoBean implements Serializable {
             }
         }
         return "";
-    }
-
-    public boolean isCalculationComplete() {
-        Future<Double> futureValue = stateManager.getFutureValue();
-        return futureValue != null && futureValue.isDone();
     }
 
     public boolean isCalculationInProgress() {

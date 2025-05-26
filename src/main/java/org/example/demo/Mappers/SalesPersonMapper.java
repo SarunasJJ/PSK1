@@ -7,7 +7,7 @@ import java.util.List;
 public interface SalesPersonMapper {
     SalesPerson findById(Long id);
     List<SalesPerson> findAll();
-    int insert(SalesPerson salesPerson);
-    int update(SalesPerson salesPerson);
-    int delete(Long id);
+    void insert(SalesPerson salesPerson);
+    void update(SalesPerson salesPerson);
+    void delete(Long id);
 }

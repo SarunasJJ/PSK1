@@ -55,7 +55,6 @@
   <div class="demo-container">
     <h:form id="asyncForm">
 
-      <!-- Start button -->
       <h:panelGroup rendered="#{not AsyncDemoBean.calculationInProgress and empty AsyncDemoBean.result and empty AsyncDemoBean.errorMessage}">
         <h:commandButton value="Calculate inventory value"
                          action="#{AsyncDemoBean.startCalculation}"
