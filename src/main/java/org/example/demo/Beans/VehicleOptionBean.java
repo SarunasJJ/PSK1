@@ -6,12 +6,14 @@ import jakarta.inject.Named;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.example.demo.Entity.Vehicle;
 import org.example.demo.Entity.VehicleOption;
 import org.example.demo.Services.DealerService;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -43,13 +45,22 @@ public class VehicleOptionBean implements Serializable {
 
     public String assignOptionsToVehicle(Long vehicleId) {
         this.vehicleId = vehicleId;
-        selectedOptionIds.clear();
+
+        Vehicle vehicle = dealerService.getVehicleById(vehicleId);
+        if (vehicle != null && vehicle.getOptions() != null) {
+            selectedOptionIds = vehicle.getOptions().stream()
+                    .map(VehicleOption::getId)
+                    .collect(Collectors.toList());
+        } else {
+            selectedOptionIds.clear();
+        }
+
         return "assign-options?faces-redirect=true";
     }
 
     public String saveVehicleOptions() {
         try {
-            if (vehicleId != null && !selectedOptionIds.isEmpty()) {
+            if (vehicleId != null) {
                 dealerService.assignOptionsToVehicle(vehicleId, selectedOptionIds);
             }
             return "vehicles?faces-redirect=true";
